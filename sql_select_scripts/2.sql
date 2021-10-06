@@ -1,0 +1,2 @@
+SELECT SUBSTRING_INDEX(name,' ',-1) AS LastName FROM Passenger 
+WHERE SUBSTRING_INDEX(name,' ',-1) NOT LIKE '%J%';
