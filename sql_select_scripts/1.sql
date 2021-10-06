@@ -1,0 +1,1 @@
+SELECT * FROM Income ORDER BY inc;
