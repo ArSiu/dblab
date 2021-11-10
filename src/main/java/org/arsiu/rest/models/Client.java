@@ -37,6 +37,8 @@ public class Client extends GeneralModel {
         this.phoneNumberFormal = phoneNumberFormal;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

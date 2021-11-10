@@ -1,8 +1,8 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.TechniqueNotFoundException;
+import org.arsiu.rest.dto.ClientDto;
+import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Client;
-import org.arsiu.rest.models.technique.Technique;
 import org.arsiu.rest.service.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,47 +24,56 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@Valid @RequestBody final Client client) {
+    public ResponseEntity<ClientDto> createClient(@Valid @RequestBody final Client client) {
+        clientService.addClient(client);
         LOGGER.info("Added new technique");
-        return new ResponseEntity<Client>(clientService.addClient(client), HttpStatus.OK);
+        return new ResponseEntity<ClientDto>(new ClientDto(client), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Client> updateClient(
+    public ResponseEntity<ClientDto> updateClient(
             @PathVariable("id") final int id,
             @Valid @RequestBody final Client client) {
 
         if (clientService.getClientById(id) == null) {
             LOGGER.error("Can't put(updateClient) an client with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't put(updateClient) an client with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't put(updateClient) an client with non-existing id: " + id);
         }
         LOGGER.info("Successfully updated client with id: " + id);
         client.setId(id);
-        return new ResponseEntity<Client>(clientService.updateClient(client), HttpStatus.OK);
+        clientService.updateClient(client);
+        return new ResponseEntity<ClientDto>(new ClientDto(client), HttpStatus.OK);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getClients() {
+    public ResponseEntity<List<ClientDto>> getClients() {
         LOGGER.info("Gave away all Clients");
-        return new ResponseEntity<List<Client>>(clientService.getClients(), HttpStatus.OK);
+        List<Client> clients = clientService.getClients();
+        List<ClientDto> clientsDto = new ArrayList<>();
+        for (Client client:clients) {
+            ClientDto clientDto = new ClientDto(client);
+            clientsDto.add(clientDto);
+        }
+        return new ResponseEntity<List<ClientDto>>(clientsDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Client> getClient(@PathVariable(name = "id") final Integer id) {
+    public ResponseEntity<ClientDto> getClient(@PathVariable(name = "id") final Integer id) {
         if (clientService.getClientById(id) == null) {
             LOGGER.error("Can't get(getClient) an client with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't get(getClient) an client with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't get(getClient) an client with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an client with id: " + id);
-        return new ResponseEntity<Client>(clientService.getClientById(id), HttpStatus.OK);
+        Client client = clientService.getClientById(id);
+        return new ResponseEntity<ClientDto>(new ClientDto(client), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Client> deleteClientById(@PathVariable("id") final Integer id) {
         if (clientService.getClientById(id) == null) {
             LOGGER.error("Can't delete(deleteClientById) an client with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't delete(deleteClientById) an client with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't delete(deleteClientById) an client with non-existing id: " + id);
         }
         LOGGER.info("Successfully deleted client with id: " + id);
         clientService.deleteClientById(id);

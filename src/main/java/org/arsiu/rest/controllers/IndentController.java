@@ -1,9 +1,7 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.TechniqueNotFoundException;
-import org.arsiu.rest.models.Client;
+import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Indent;
-import org.arsiu.rest.service.ClientService;
 import org.arsiu.rest.service.IndentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +34,7 @@ public class IndentController {
 
         if (indentService.getIndentById(id) == null) {
             LOGGER.error("Can't put(updateIndent) an Indent with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't put(updateIndent) an Indent with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't put(updateIndent) an Indent with non-existing id: " + id);
         }
         LOGGER.info("Successfully updated Indent with id: " + id);
         indent.setId(id);
@@ -54,7 +52,7 @@ public class IndentController {
     public ResponseEntity<Indent> getIndent(@PathVariable(name = "id") final Integer id) {
         if (indentService.getIndentById(id) == null) {
             LOGGER.error("Can't get(getIndent) an Indent with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't get(getIndent) an Indent with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't get(getIndent) an Indent with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an client with id: " + id);
         return new ResponseEntity<Indent>(indentService.getIndentById(id), HttpStatus.OK);
@@ -64,7 +62,7 @@ public class IndentController {
     public ResponseEntity<Indent> deleteIndentById(@PathVariable("id") final Integer id) {
         if (indentService.getIndentById(id) == null) {
             LOGGER.error("Can't delete(deleteIndentById) an Indent with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't delete(deleteIndentById) an Indent with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't delete(deleteIndentById) an Indent with non-existing id: " + id);
         }
         LOGGER.info("Successfully deleted Indent with id: " + id);
         indentService.deleteIndentById(id);

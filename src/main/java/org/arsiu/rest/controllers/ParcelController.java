@@ -1,9 +1,7 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.TechniqueNotFoundException;
-import org.arsiu.rest.models.Client;
+import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Parcel;
-import org.arsiu.rest.service.ClientService;
 import org.arsiu.rest.service.ParcelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +34,7 @@ public class ParcelController {
 
         if (parcelService.getParcelById(id) == null) {
             LOGGER.error("Can't put(updateParcel) an Parcel with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't put(updateParcel) an Parcel with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't put(updateParcel) an Parcel with non-existing id: " + id);
         }
         LOGGER.info("Successfully updated Parcel with id: " + id);
         parcel.setId(id);
@@ -54,7 +52,7 @@ public class ParcelController {
     public ResponseEntity<Parcel> getParcel(@PathVariable(name = "id") final Integer id) {
         if (parcelService.getParcelById(id) == null) {
             LOGGER.error("Can't get(getParcel) an Parcel with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't get(getParcel) an Parcel with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't get(getParcel) an Parcel with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an Parcel with id: " + id);
         return new ResponseEntity<Parcel>(parcelService.getParcelById(id), HttpStatus.OK);
@@ -64,7 +62,7 @@ public class ParcelController {
     public ResponseEntity<Parcel> deleteParcelById(@PathVariable("id") final Integer id) {
         if (parcelService.getParcelById(id) == null) {
             LOGGER.error("Can't delete(deleteParcelById) an Parcel with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't delete(deleteParcelById) an Parcel with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't delete(deleteParcelById) an Parcel with non-existing id: " + id);
         }
         LOGGER.info("Successfully deleted Parcel with id: " + id);
         parcelService.deleteParcelById(id);

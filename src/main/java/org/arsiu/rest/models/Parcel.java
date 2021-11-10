@@ -1,5 +1,7 @@
 package org.arsiu.rest.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,13 +11,13 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Date;
+import java.sql.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="parcel", schema="nova_poshta")
 public class Parcel extends GeneralModel{
@@ -39,12 +41,12 @@ public class Parcel extends GeneralModel{
     private Double weight;
 
     @Basic
-    @Column(name = "dateSend",columnDefinition = "TIMESTAMP")
-    private LocalDateTime dateSend;
+    @Column(name = "date_send")
+    private Date dateSend;
 
     @Basic
-    @Column(name = "dateRecive",columnDefinition = "TIMESTAMP")
-    private LocalDateTime dateRecive;
+    @Column(name = "date_recive")
+    private Date dateRecive;
 
     @Basic
     @Column(name = "address_sender")
@@ -58,8 +60,8 @@ public class Parcel extends GeneralModel{
     @Size(min=2, max=32)
     private String addressReciver;
 
-    public Parcel(final Double price, final Double weight, final LocalDateTime dateSend,
-                  final LocalDateTime dateRecive, final String addressSender, final String addressReciver) {
+    public Parcel(final Double price, final Double weight, final Date dateSend,
+                  final Date dateRecive, final String addressSender, final String addressReciver) {
         this.price = price;
         this.weight = weight;
         this.dateSend = dateSend;

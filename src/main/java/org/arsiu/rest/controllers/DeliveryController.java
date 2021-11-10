@@ -1,9 +1,7 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.TechniqueNotFoundException;
-import org.arsiu.rest.models.Client;
+import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Delivery;
-import org.arsiu.rest.service.ClientService;
 import org.arsiu.rest.service.DeliveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +34,7 @@ public class DeliveryController {
 
         if (deliveryService.getDeliveryById(id) == null) {
             LOGGER.error("Can't put(updateDelivery) an delivery with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't put(updateDelivery) an delivery with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't put(updateDelivery) an delivery with non-existing id: " + id);
         }
         LOGGER.info("Successfully updated delivery with id: " + id);
         delivery.setId(id);
@@ -54,7 +52,7 @@ public class DeliveryController {
     public ResponseEntity<Delivery> getDelivery(@PathVariable(name = "id") final Integer id) {
         if (deliveryService.getDeliveryById(id) == null) {
             LOGGER.error("Can't get(getDelivery) an Delivery with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't get(getDelivery) an Delivery with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't get(getDelivery) an Delivery with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an Delivery with id: " + id);
         return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id), HttpStatus.OK);
@@ -64,7 +62,7 @@ public class DeliveryController {
     public ResponseEntity<Delivery> deleteDeliveryById(@PathVariable("id") final Integer id) {
         if (deliveryService.getDeliveryById(id) == null) {
             LOGGER.error("Can't delete(deleteDeliveryById) an Delivery with non-existing id: " + id);
-            throw new TechniqueNotFoundException("Can't delete(deleteDeliveryById) an Delivery with non-existing id: " + id);
+            throw new ItemNotFoundException("Can't delete(deleteDeliveryById) an Delivery with non-existing id: " + id);
         }
         LOGGER.info("Successfully deleted client with id: " + id);
         deliveryService.deleteDeliveryById(id);

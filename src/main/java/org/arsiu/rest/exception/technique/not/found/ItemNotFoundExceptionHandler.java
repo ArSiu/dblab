@@ -1,6 +1,5 @@
-package org.arsiu.rest.exception.technique.invalid;
+package org.arsiu.rest.exception.technique.not.found;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.arsiu.rest.exception.technique.ItemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +9,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @ControllerAdvice
-public class FormatExceptionHandler {
-    @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<Object> handleInvalidFormatException(final InvalidFormatException e) {
+public class ItemNotFoundExceptionHandler {
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<Object> handleTechniqueNotFoundException(final ItemNotFoundException e) {
         ItemException itemException = new ItemException(
                 e.getMessage(),
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(itemException, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(itemException, HttpStatus.NOT_FOUND);
     }
-
 }

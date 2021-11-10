@@ -9,7 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 @Setter
@@ -64,7 +64,7 @@ public class Worker extends GeneralModel{
     @Basic
     @Column(name = "hirring_date")
     @NotNull(message = "Missing hirringDate")
-    private String hirringDate;
+    private Date hirringDate;
 
     @Basic
     @Column(name = "working_hours")
@@ -79,7 +79,7 @@ public class Worker extends GeneralModel{
     private PostOffice postOfficeByPostOfficeId;
 
     public Worker(final String firstName, final String lastName, final String patronymic,
-                  final String position, final Double salary, final Integer passportNumber, final String hirringDate,
+                  final String position, final Double salary, final Integer passportNumber, final Date hirringDate,
                   final Integer workingHours, final PostOffice postOfficeByPostOfficeId) {
         this.firstName = firstName;
         this.lastName = lastName;
