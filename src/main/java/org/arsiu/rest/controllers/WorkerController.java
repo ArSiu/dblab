@@ -1,6 +1,7 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
+import org.arsiu.rest.dto.WorkerDto;
+import org.arsiu.rest.exception.item.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Worker;
 import org.arsiu.rest.service.WorkerService;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +24,13 @@ public class WorkerController {
     private WorkerService workerService;
 
     @PostMapping
-    public ResponseEntity<Worker> createClient(@Valid @RequestBody final Worker worker) {
+    public ResponseEntity<WorkerDto> createClient(@Valid @RequestBody final Worker worker) {
         LOGGER.info("Added new worker");
-        return new ResponseEntity<Worker>(workerService.addWorker(worker), HttpStatus.OK);
+        return new ResponseEntity<WorkerDto>(new WorkerDto(workerService.addWorker(worker)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Worker> updateWorker(
+    public ResponseEntity<WorkerDto> updateWorker(
             @PathVariable("id") final int id,
             @Valid @RequestBody final Worker worker) {
 
@@ -38,24 +40,29 @@ public class WorkerController {
         }
         LOGGER.info("Successfully updated Worker with id: " + id);
         worker.setId(id);
-        return new ResponseEntity<Worker>(workerService.updateWorker(worker), HttpStatus.OK);
+        return new ResponseEntity<WorkerDto>(new WorkerDto(workerService.updateWorker(worker)), HttpStatus.OK);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Worker>> getWorkers() {
+    public ResponseEntity<List<WorkerDto>> getWorkers() {
         LOGGER.info("Gave away all Worker");
-        return new ResponseEntity<List<Worker>>(workerService.getWorkers(), HttpStatus.OK);
+        List<Worker> workers = workerService.getWorkers();
+        List<WorkerDto> workerDtos = new ArrayList<>();
+        for (Worker worker:workers) {
+            workerDtos.add(new WorkerDto(worker));
+        }
+        return new ResponseEntity<List<WorkerDto>>(workerDtos, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Worker> getWorker(@PathVariable(name = "id") final Integer id) {
+    public ResponseEntity<WorkerDto> getWorker(@PathVariable(name = "id") final Integer id) {
         if (workerService.getWorkerById(id) == null) {
             LOGGER.error("Can't get(getWorker) an Worker with non-existing id: " + id);
             throw new ItemNotFoundException("Can't get(getWorker) an Worker with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an Worker with id: " + id);
-        return new ResponseEntity<Worker>(workerService.getWorkerById(id), HttpStatus.OK);
+        return new ResponseEntity<WorkerDto>(new WorkerDto(workerService.getWorkerById(id)), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

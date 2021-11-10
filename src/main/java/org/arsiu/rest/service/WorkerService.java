@@ -1,6 +1,6 @@
 package org.arsiu.rest.service;
 
-import org.arsiu.rest.dal.WorkerRepository;
+import org.arsiu.rest.dao.WorkerRepository;
 import org.arsiu.rest.models.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

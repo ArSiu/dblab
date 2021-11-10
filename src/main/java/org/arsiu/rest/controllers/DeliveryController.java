@@ -1,6 +1,9 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
+import org.arsiu.rest.dto.ClientDto;
+import org.arsiu.rest.dto.DeliveryDto;
+import org.arsiu.rest.exception.item.not.found.ItemNotFoundException;
+import org.arsiu.rest.models.Client;
 import org.arsiu.rest.models.Delivery;
 import org.arsiu.rest.service.DeliveryService;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +26,14 @@ public class DeliveryController {
     private DeliveryService deliveryService;
 
     @PostMapping
-    public ResponseEntity<Delivery> createDelivery(@Valid @RequestBody final Delivery delivery) {
+    public ResponseEntity<DeliveryDto> createDelivery(@Valid @RequestBody final Delivery delivery) {
         LOGGER.info("Added new delivery");
-        return new ResponseEntity<Delivery>(deliveryService.addDelivery(delivery), HttpStatus.OK);
+        deliveryService.addDelivery(delivery);
+        return new ResponseEntity<DeliveryDto>(new DeliveryDto(delivery), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Delivery> updateDelivery(
+    public ResponseEntity<DeliveryDto> updateDelivery(
             @PathVariable("id") final int id,
             @Valid @RequestBody final Delivery delivery) {
 
@@ -38,24 +43,31 @@ public class DeliveryController {
         }
         LOGGER.info("Successfully updated delivery with id: " + id);
         delivery.setId(id);
-        return new ResponseEntity<Delivery>(deliveryService.updateDelivery(delivery), HttpStatus.OK);
+        deliveryService.updateDelivery(delivery);
+        return new ResponseEntity<DeliveryDto>(new DeliveryDto(delivery), HttpStatus.OK);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Delivery>> getDelivery() {
+    public ResponseEntity<List<DeliveryDto>> getDelivery() {
         LOGGER.info("Gave away all Delivery");
-        return new ResponseEntity<List<Delivery>>(deliveryService.getDeliveries(), HttpStatus.OK);
+        List<Delivery> delivery = deliveryService.getDeliveries();
+        List<DeliveryDto> deliveryDto = new ArrayList<>();
+        for (Delivery del:delivery) {
+            DeliveryDto deliveryDtos = new DeliveryDto(del);
+            deliveryDto.add(deliveryDtos);
+        }
+        return new ResponseEntity<List<DeliveryDto>>(deliveryDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Delivery> getDelivery(@PathVariable(name = "id") final Integer id) {
+    public ResponseEntity<DeliveryDto> getDelivery(@PathVariable(name = "id") final Integer id) {
         if (deliveryService.getDeliveryById(id) == null) {
             LOGGER.error("Can't get(getDelivery) an Delivery with non-existing id: " + id);
             throw new ItemNotFoundException("Can't get(getDelivery) an Delivery with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an Delivery with id: " + id);
-        return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id), HttpStatus.OK);
+        return new ResponseEntity<DeliveryDto>(new DeliveryDto(deliveryService.getDeliveryById(id)), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

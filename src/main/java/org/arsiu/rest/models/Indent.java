@@ -57,7 +57,7 @@ public class Indent extends GeneralModel{
     private String status;
 
     public Indent(final Integer id, final PostOffice postOfficeFromId, final PostOffice postOfficeToId,
-                  final Client clientBySenderId,final Client clientByReciverId, final Parcel parcelId,
+                  final Client clientBySenderId, final Client clientByReciverId, final Parcel parcelId,
                   final Delivery deliveryByDeliveryId, final String status) {
         this.id = id;
         this.postOfficeFromId = postOfficeFromId;

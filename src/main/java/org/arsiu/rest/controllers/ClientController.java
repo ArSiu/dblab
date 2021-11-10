@@ -1,7 +1,7 @@
 package org.arsiu.rest.controllers;
 
 import org.arsiu.rest.dto.ClientDto;
-import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
+import org.arsiu.rest.exception.item.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Client;
 import org.arsiu.rest.service.ClientService;
 import org.slf4j.Logger;

@@ -63,6 +63,8 @@ public class Delivery extends GeneralModel{
         this.minWeight = minWeight;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

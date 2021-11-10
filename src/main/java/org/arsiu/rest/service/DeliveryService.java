@@ -1,8 +1,6 @@
 package org.arsiu.rest.service;
 
-import org.arsiu.rest.dal.ClientRepository;
-import org.arsiu.rest.dal.DeliveryRepository;
-import org.arsiu.rest.models.Client;
+import org.arsiu.rest.dao.DeliveryRepository;
 import org.arsiu.rest.models.Delivery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

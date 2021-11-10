@@ -1,6 +1,7 @@
 package org.arsiu.rest.controllers;
 
-import org.arsiu.rest.exception.technique.not.found.ItemNotFoundException;
+import org.arsiu.rest.dto.IndentDto;
+import org.arsiu.rest.exception.item.not.found.ItemNotFoundException;
 import org.arsiu.rest.models.Indent;
 import org.arsiu.rest.service.IndentService;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +24,13 @@ public class IndentController {
     private IndentService indentService;
 
     @PostMapping
-    public ResponseEntity<Indent> createIndent(@Valid @RequestBody final Indent indent) {
+    public ResponseEntity<IndentDto> createIndent(@Valid @RequestBody final Indent indent) {
         LOGGER.info("Added new technique");
-        return new ResponseEntity<Indent>(indentService.addIndent(indent), HttpStatus.OK);
+        return new ResponseEntity<IndentDto>(new IndentDto(indentService.addIndent(indent)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Indent> updateIndent(
+    public ResponseEntity<IndentDto> updateIndent(
             @PathVariable("id") final int id,
             @Valid @RequestBody final Indent indent) {
 
@@ -38,24 +40,29 @@ public class IndentController {
         }
         LOGGER.info("Successfully updated Indent with id: " + id);
         indent.setId(id);
-        return new ResponseEntity<Indent>(indentService.updateIndent(indent), HttpStatus.OK);
+        return new ResponseEntity<IndentDto>(new IndentDto(indentService.updateIndent(indent)), HttpStatus.OK);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Indent>> getIndents() {
+    public ResponseEntity<List<IndentDto>> getIndents() {
         LOGGER.info("Gave away all Indents");
-        return new ResponseEntity<List<Indent>>(indentService.getIndents(), HttpStatus.OK);
+        List<Indent> indents = indentService.getIndents();
+        List<IndentDto> indentDtos = new ArrayList<>();
+        for (Indent indent:indents) {
+            indentDtos.add(new IndentDto(indent));
+        }
+        return new ResponseEntity<List<IndentDto>>(indentDtos, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Indent> getIndent(@PathVariable(name = "id") final Integer id) {
+    public ResponseEntity<IndentDto> getIndent(@PathVariable(name = "id") final Integer id) {
         if (indentService.getIndentById(id) == null) {
             LOGGER.error("Can't get(getIndent) an Indent with non-existing id: " + id);
             throw new ItemNotFoundException("Can't get(getIndent) an Indent with non-existing id: " + id);
         }
         LOGGER.info("Successfully get an client with id: " + id);
-        return new ResponseEntity<Indent>(indentService.getIndentById(id), HttpStatus.OK);
+        return new ResponseEntity<IndentDto>(new IndentDto(indentService.getIndentById(id)), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

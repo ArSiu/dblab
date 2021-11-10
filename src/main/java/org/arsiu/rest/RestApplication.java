@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.io.IOException;
 
 @SpringBootApplication
-@ComponentScan({"org.arsiu.rest.controllers", "org.arsiu.rest.service","org.arsiu.rest.exception"})
-@EntityScan({"org.arsiu.rest.models.technique","org.arsiu.rest.models"})
-@EnableJpaRepositories("org.arsiu.rest.dal")
+@ComponentScan({"org.arsiu.rest.controllers", "org.arsiu.rest.service","org.arsiu.rest.exception","org.arsiu.rest.config"})
+@EntityScan({"org.arsiu.rest.models"})
+@EnableJpaRepositories("org.arsiu.rest.dao")
 public class RestApplication {
     public static void main(String[] args) {
         try {

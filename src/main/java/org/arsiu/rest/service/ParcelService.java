@@ -1,6 +1,6 @@
 package org.arsiu.rest.service;
 
-import org.arsiu.rest.dal.ParcelRepository;
+import org.arsiu.rest.dao.ParcelRepository;
 import org.arsiu.rest.models.Parcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

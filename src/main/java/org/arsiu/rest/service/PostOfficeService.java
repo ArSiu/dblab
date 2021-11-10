@@ -1,8 +1,6 @@
 package org.arsiu.rest.service;
 
-import org.arsiu.rest.dal.ParcelRepository;
-import org.arsiu.rest.dal.PostOfficeRepository;
-import org.arsiu.rest.models.Parcel;
+import org.arsiu.rest.dao.PostOfficeRepository;
 import org.arsiu.rest.models.PostOffice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

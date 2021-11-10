@@ -1,8 +1,6 @@
 package org.arsiu.rest.service;
 
-import org.arsiu.rest.dal.DeliveryRepository;
-import org.arsiu.rest.dal.IndentRepository;
-import org.arsiu.rest.models.Delivery;
+import org.arsiu.rest.dao.IndentRepository;
 import org.arsiu.rest.models.Indent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
